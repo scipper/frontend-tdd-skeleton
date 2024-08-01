@@ -1,23 +1,25 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-import {resolve as _resolve} from "path";
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import MiniCssExtractPlugin, {loader as _loader} from "mini-css-extract-plugin";
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProduction = process.env.NODE_ENV === "production";
 
 
-const stylesHandler = isProduction ? _loader : "style-loader";
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 
 const config = {
     entry: "./src/main/ts/Main.ts",
     output: {
-        path: _resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "dist")
     },
     devServer: {
         open: true,
-        host: "localhost"
+        host: "localhost",
+        hot: true,
+        watchFiles: ["./src/main/resources/*"]
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -52,7 +54,7 @@ const config = {
     }
 };
 
-export default () => {
+module.exports = () => {
     if (isProduction) {
         config.mode = "production";
 
