@@ -24,6 +24,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./target",
+    "sourceMap": true,
     "lib": [
       "DOM"
     ]
