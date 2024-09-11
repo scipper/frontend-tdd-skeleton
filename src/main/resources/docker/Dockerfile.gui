@@ -2,10 +2,15 @@ FROM node:alpine as build-deps
 
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
+COPY ../../../../package.json package-lock.json ./
 
 RUN npm install
-COPY . ./
+COPY .mocharc.json ./
+COPY tsconfig.json ./
+COPY webpack.config.js ./
+COPY src/main/ ./src/main
+COPY src/test/ ./src/test
+RUN npm test
 RUN npm run build:prod
 
 FROM nginx:1.12-alpine

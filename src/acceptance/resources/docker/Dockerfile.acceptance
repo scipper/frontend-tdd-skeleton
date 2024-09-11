@@ -1,0 +1,10 @@
+FROM node:alpine as build-deps
+
+WORKDIR /usr/src/app
+
+COPY ../../../../package.json package-lock.json ./
+
+RUN npm install
+COPY tsconfig.json ./
+COPY src/acceptance/ ./src/acceptance
+RUN npm run acceptance

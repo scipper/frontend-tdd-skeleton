@@ -1,7 +1,30 @@
 services:
-  web:
+  gui:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/main/resources/docker/Dockerfile.gui
     ports:
       - "8080:80"
+    networks:
+      - dev
+
+  chrome-webdriver:
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"
+    networks:
+      - dev
+
+  acceptance:
+    build:
+      context: .
+      dockerfile: src/acceptance/resources/docker/Dockerfile.acceptance
+    depends_on:
+      - chrome-webdriver
+      - gui
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge
