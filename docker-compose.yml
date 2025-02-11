@@ -15,7 +15,7 @@ services:
     networks:
       - tdd
 
-  acceptance:
+  acceptance-testing:
     build:
       context: .
       dockerfile: src/acceptance/resources/docker/Dockerfile.acceptance

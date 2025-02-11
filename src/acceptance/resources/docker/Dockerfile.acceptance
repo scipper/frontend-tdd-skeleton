@@ -1,13 +1,12 @@
-FROM node:alpine
+FROM node:21.6.1-alpine3.19
 
 WORKDIR /usr/src/app
 
-COPY ../../../../package.json package-lock.json ./
+COPY ../../../../package.json ./
+COPY ../../../../package-lock.json ./
 
 RUN npm install
-COPY tsconfig.json ./
-COPY src/acceptance/ ./src/acceptance
-RUN npm run acceptance
+COPY ../../../../tsconfig.json ./
+COPY ../../../../src/acceptance/ ./src/acceptance
 
-HEALTHCHECK --interval=5m --timeout=3s \
-  CMD curl -f http://localhost:4444/wd/hub || exit 1
+CMD ["npm", "run", "acceptance"]

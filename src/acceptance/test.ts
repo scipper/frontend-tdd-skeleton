@@ -7,19 +7,20 @@ const timeBetweenRetriesInSeconds = 3 * 1000;
 
 async function run() {
   const seleniumServer = "http://chrome-webdriver:4444/wd/hub";
+  const gui = "http://gui:80";
 
-  do {
-    maxRetries--;
-    try {
-      await fetch(seleniumServer);
-    } catch(_) {
-      await new Promise((resolve) => setTimeout(resolve, timeBetweenRetriesInSeconds));
-    }
-  } while(maxRetries > 0);
-
-  if(maxRetries === 0) {
-    throw new Error("Selenium Server not reachable");
-  }
+  // do {
+  //   maxRetries--;
+  //   try {
+  //     await fetch(seleniumServer);
+  //   } catch(_) {
+  //     await new Promise((resolve) => setTimeout(resolve, timeBetweenRetriesInSeconds));
+  //   }
+  // } while(maxRetries > 0);
+  //
+  // if(maxRetries === 0) {
+  //   throw new Error("Selenium Server not reachable");
+  // }
 
 
   const driverBuilder = new Builder()
@@ -33,9 +34,10 @@ async function run() {
     .usingServer(seleniumServer)
     .build();
   try {
-    await driver.get("http://gui:8080");
+    await driver.get(gui);
     const innerText = await driver.findElement(By.css("h1")).getText();
     assert.equal("It's working!", innerText);
+    console.log("WORKING");
   } finally {
     await driver.quit();
   }
