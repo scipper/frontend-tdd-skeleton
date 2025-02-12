@@ -1,29 +1,15 @@
-import {Builder, Browser, By} from "selenium-webdriver";
-import {assert} from "chai";
-import {Options} from "selenium-webdriver/chrome";
+import {MainTest} from "./ts/main/MainTest";
 
-async function run() {
-  const seleniumServer = "http://chrome-webdriver:4444/wd/hub";
-  const gui = "http://gui:80";
+const listOfTests: any[] = [
+    MainTest
+];
 
-  const driverBuilder = new Builder()
-    .forBrowser(Browser.CHROME);
-  const options = new Options();
-  options.addArguments("--headless");
-
-  options.addArguments("--no-sandbox");
-  const driver = await driverBuilder
-    .setChromeOptions(options)
-    .usingServer(seleniumServer)
-    .build();
-  try {
-    await driver.get(gui);
-    const innerText = await driver.findElement(By.css("h1")).getText();
-    assert.equal("It's working!", innerText);
-    console.log("WORKING");
-  } finally {
-    await driver.quit();
-  }
-}
-
-run();
+listOfTests.forEach((testClass) => {
+    const testInstance = new testClass();
+    const ownPropertyNames = Object.getOwnPropertyNames(Object.getPrototypeOf(testInstance));
+    const testMethods = ownPropertyNames
+        .filter((propertyName) => propertyName.startsWith("test"));
+   testMethods.forEach((testMethod) => {
+       testInstance[testMethod]();
+   })
+});
